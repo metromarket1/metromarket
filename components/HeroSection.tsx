@@ -17,9 +17,6 @@ export const HeroSection: React.FC = () => {
           className="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute bottom-0 right-0 p-4 z-20">
-          <p className="text-white font-bold text-xl drop-shadow-md">
-            مترو ماركت
-          </p>
           <p className="text-xs text-gray-200 mt-1 flex items-center gap-1">
             <span className="material-icons-outlined text-sm">visibility</span>
             <span>اضغط لعرض القائمة الكاملة</span>
@@ -29,7 +26,7 @@ export const HeroSection: React.FC = () => {
 
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
+          className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
           onClick={() => setIsOpen(false)}
         >
           <div className="relative max-w-2xl w-full max-h-[90vh] overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-2xl">

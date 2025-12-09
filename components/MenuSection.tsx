@@ -62,7 +62,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ cart, onUpdateCart, on
 
       {/* Filter Pills (Hide if searching) */}
       {!searchQuery && (
-        <div className="flex space-x-2 space-x-reverse overflow-x-auto pb-2 no-scrollbar">
+        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
           {CATEGORIES.map(cat => {
             const isActive = activeCategory === cat.id;
             return (

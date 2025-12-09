@@ -149,11 +149,11 @@ const App: React.FC = () => {
         <header className="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-border-light dark:border-border-dark px-4 py-3 flex items-center justify-between transition-colors">
           <div className="flex items-center gap-3">
              <div className="w-10 h-10 rounded-full overflow-hidden border border-border-light dark:border-border-dark bg-card-dark">
-                <img src="https://placehold.co/100x100/000000/fcb600?text=M" alt="Logo" className="w-full h-full object-cover" />
+                <img src="./resources/images/metrologo.jpeg" alt="Logo" className="w-full h-full object-cover" />
              </div>
              <div>
                <h1 className="font-bold text-lg leading-tight text-text-light dark:text-text-dark">طلبات الموظفين</h1>
-               <p className="text-xs text-subtle-light dark:text-subtle-dark font-medium">Metro Market</p>
+               <p className="text-xs text-subtle-light dark:text-subtle-dark font-medium">Metro Sandwiches</p>
              </div>
           </div>
           <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />

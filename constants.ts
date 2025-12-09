@@ -71,7 +71,7 @@ export const MENU_DATA: MenuItem[] = [
   { category: 'starters', name: "أصابع كريسبي وصوصات", price: 30, description: "للمشاركة" },
 
   // Drinks
-  { category: 'drinks', name: "عصير برتقال", price: 12, description: "طازج يومياً" },
-  { category: 'drinks', name: "عصير شمندر", price: 12, description: "صحي ومنعش" },
-  { category: 'drinks', name: "عصير أخضر", price: 12, description: "ديتوكس طبيعي" },
+  { category: 'drinks', name: "عصير برتقال", price: 12, description: "عصير برتقال طازج" },
+  { category: 'drinks', name: "عصير شمندر", price: 12, description: "عصير شمندر طازج" },
+  { category: 'drinks', name: "عصير أخضر", price: 12, description: "عصير أخضر طازج" },
 ];
