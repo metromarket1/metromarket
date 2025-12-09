@@ -7,6 +7,8 @@ import { Cart, MenuItem, UserDetails, OrderData, CartItem } from './types';
 import { submitOrderToFirebase } from './services/firebase';
 import { WHATSAPP_NUMBER } from './constants';
 
+import logoImage from './resources/images/metrologo.jpeg';
+
 const App: React.FC = () => {
   // Theme State
   const [isDark, setIsDark] = useState(false);
@@ -149,7 +151,7 @@ const App: React.FC = () => {
         <header className="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-border-light dark:border-border-dark px-4 py-3 flex items-center justify-between transition-colors">
           <div className="flex items-center gap-3">
              <div className="w-10 h-10 rounded-full overflow-hidden border border-border-light dark:border-border-dark bg-card-dark">
-                <img src="./resources/images/metrologo.jpeg" alt="Logo" className="w-full h-full object-cover" />
+                <img src={logoImage} alt="Logo" className="w-full h-full object-cover" />
              </div>
              <div>
                <h1 className="font-bold text-lg leading-tight text-text-light dark:text-text-dark">طلبات الموظفين</h1>
