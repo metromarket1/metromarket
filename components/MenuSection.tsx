@@ -1,15 +1,16 @@
 
 import React, { useState, useMemo } from 'react';
-import { MenuItem, Category, Cart } from '../types';
+import { MenuItem, Category, Cart, MenuAvailability } from '../types';
 import { CATEGORIES, MENU_DATA } from '../constants';
 
 interface MenuSectionProps {
   cart: Cart;
   onUpdateCart: (item: MenuItem, change: number) => void;
   onUpdateNotes: (itemName: string, notes: string) => void;
+  availability?: MenuAvailability;
 }
 
-export const MenuSection: React.FC<MenuSectionProps> = ({ cart, onUpdateCart, onUpdateNotes }) => {
+export const MenuSection: React.FC<MenuSectionProps> = ({ cart, onUpdateCart, onUpdateNotes, availability = {} }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('sandwiches');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedNotes, setExpandedNotes] = useState<Record<string, boolean>>({});
@@ -24,6 +25,9 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ cart, onUpdateCart, on
   const filteredItems = useMemo(() => {
     let items = MENU_DATA;
     
+    // Availability filter
+    items = items.filter(item => availability[item.name] !== false);
+    
     // Search filter
     if (searchQuery) {
       items = items.filter(item => 
@@ -35,7 +39,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ cart, onUpdateCart, on
     }
     
     return items;
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, availability]);
 
   return (
     <section className="space-y-4">

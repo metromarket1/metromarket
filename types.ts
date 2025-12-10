@@ -24,6 +24,7 @@ export interface UserDetails {
 export type Category = 'sandwiches' | 'salads' | 'starters' | 'drinks';
 
 export interface OrderData extends UserDetails {
+  id?: string;
   orders: {
     order: string;
     qty: number;
@@ -31,4 +32,8 @@ export interface OrderData extends UserDetails {
   }[];
   total: number;
   createdAt: string;
+}
+
+export interface MenuAvailability {
+  [itemName: string]: boolean;
 }

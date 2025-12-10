@@ -3,7 +3,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { HeroSection } from './HeroSection';
 import { MenuSection } from './MenuSection';
-import { Cart, MenuItem, CartItem } from '../types';
+import { Cart, MenuItem, CartItem, MenuAvailability } from '../types';
 
 interface Step1MealSelectionProps {
   cart: Cart;
@@ -12,6 +12,7 @@ interface Step1MealSelectionProps {
   onNext: () => void;
   totalAmount: number;
   isOrderingOpen: boolean;
+  availability?: MenuAvailability;
 }
 
 export const Step1MealSelection: React.FC<Step1MealSelectionProps> = ({
@@ -20,7 +21,8 @@ export const Step1MealSelection: React.FC<Step1MealSelectionProps> = ({
   onUpdateNotes,
   onNext,
   totalAmount,
-  isOrderingOpen
+  isOrderingOpen,
+  availability
 }) => {
   const cartItems = Object.values(cart) as CartItem[];
   const totalQty = cartItems.reduce((acc, item) => acc + item.qty, 0);
@@ -44,6 +46,7 @@ export const Step1MealSelection: React.FC<Step1MealSelectionProps> = ({
           cart={cart}
           onUpdateCart={onUpdateCart}
           onUpdateNotes={onUpdateNotes}
+          availability={availability}
         />
       </div>
 
