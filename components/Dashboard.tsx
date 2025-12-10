@@ -5,7 +5,7 @@ import {
   subscribeToAuth, 
   getOrders, 
   subscribeToMenuAvailability, 
-  updateMenuAvailability 
+  updateMenuItemAvailability 
 } from '../services/firebase';
 import { OrderData, MenuAvailability } from '../types';
 import { MENU_DATA } from '../constants';
@@ -73,29 +73,11 @@ export const Dashboard: React.FC = () => {
     // If undefined, it's available by default, so we make it false
     const newStatus = currentStatus === false ? true : false;
     
-    // In our map, true means AVAILABLE? Or DISABLED?
-    // Let's stick to: true = DISABLED/UNAVAILABLE to save space? 
-    // Or better: true = AVAILABLE (default).
-    // Actually, if I use "availability", true = available.
-    // If the item is missing from the map, we assume it is available (default).
-    // So we only need to store 'false' for unavailable items.
-    
-    // Let's define: true = available, false = unavailable.
-    // If undefined, treat as true.
-    
-    const isCurrentlyAvailable = availability[itemName] !== false;
-    // Toggle the status: if available (true/undefined) -> make it false. If unavailable (false) -> make it true.
-    // We only store 'false' for unavailable items to keep the document small.
-    // If we want to make it available, we can delete the key or set it to true.
-    // Let's set it to true for clarity, or just toggle.
-    
-    const newAvailability = { ...availability, [itemName]: !isCurrentlyAvailable };
-    
     try {
-      await updateMenuAvailability(newAvailability);
-    } catch (error) {
+      await updateMenuItemAvailability(itemName, newStatus);
+    } catch (error: any) {
       console.error("Failed to update availability:", error);
-      alert("فشل تحديث الحالة. يرجى المحاولة مرة أخرى.");
+      alert(`فشل تحديث الحالة: ${error.message || error}`);
     }
   };
 

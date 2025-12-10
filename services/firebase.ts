@@ -62,6 +62,11 @@ export const updateMenuAvailability = async (availability: MenuAvailability) => 
   await setDoc(docRef, availability, { merge: true });
 };
 
+export const updateMenuItemAvailability = async (itemName: string, isAvailable: boolean) => {
+  const docRef = doc(db, "settings", "menu_availability");
+  await setDoc(docRef, { [itemName]: isAvailable }, { merge: true });
+};
+
 // --- Auth ---
 
 export const loginUser = (email: string, pass: string) => {
