@@ -22,16 +22,28 @@ export const CATEGORIES: { id: Category; label: string }[] = [
 ];
 
 export const COMPANIES = [
-  "مترو الشمال",
-  "مترو الجنوب",
-  "مترو المركز"
+  "ccc بنك فلسطين",
+  "بنك الأردن الإرسال",
+  "بنك الإستثمار الإرسال",
+  "سلطة النقد",
+  "برج عمار"
 ];
 
 export const DELIVERY_TIMES = [
-  "12:00 PM",
-  "12:30 PM",
-  "1:00 PM"
+  "10:45 AM",
+  "11:45 AM",
+  "01:00 PM"
 ];
+
+export const ORDER_START_TIME = {
+  hour: 7,
+  minute: 0
+};
+
+export const ORDER_CUTOFF_TIME = {
+  hour: 12,
+  minute: 30
+};
 
 // Transformed data structure for easier consumption
 export const MENU_DATA: MenuItem[] = [
@@ -50,7 +62,7 @@ export const MENU_DATA: MenuItem[] = [
   { category: 'sandwiches', name: "لحمة كرانشي", price: 30, description: "150 غرام لحم مفروم طازج، شيبس، جودا، شيدر، ذرة، بندورة، صوص." },
   { category: 'sandwiches', name: "ساندويش كفتة", price: 30, description: "180 غرام كفتة، خس، بندورة، بطاطا مقلية، طحينة." },
   { category: 'sandwiches', name: "سلمون مدخّن", price: 35, description: "100 غرام سلمون مدخن، أفوكادو، خيار، صوص." },
-  
+
   // Salads
   { category: 'salads', name: "سلطة سيزر", price: 22, description: "خس، شيري، خبز مقلي، بارميزان، صوص يحتوي على مايونيز." },
   { category: 'salads', name: "سلطة يونانية", price: 22, description: "خس، شيري، خيار، زيتون أسود، فيتا، ليمون، زيت زيتون." },
@@ -63,15 +75,23 @@ export const MENU_DATA: MenuItem[] = [
 
   // Starters
   { category: 'starters', name: "بطاطا سادة", price: 10, description: "مقرمشة وذهبية" },
-  { category: 'starters', name: "بطاطا ويدجز", price: 12, description: "متبلة ومشوية" },
+  { category: 'starters', name: "بطاطا ويدجز", price: 12, description: "متبلة ومقلية" },
   { category: 'starters', name: "بطاطا مع تشيدر وهالبينو", price: 14, description: "حار وجبني" },
   { category: 'starters', name: "بطاطا كيرلي", price: 14, description: "" },
   { category: 'starters', name: "مكس بوكس", price: 18, description: "تشكيلة مميزة" },
-  { category: 'starters', name: "بطاطا مع دجاج كريسبي", price: 25, description: "وجبة خفيفة مشبعة" },
+  { category: 'starters', name: "بطاطا مع دجاج كريسبي", price: 25, description: "اشحن طاقتك" },
   { category: 'starters', name: "أصابع كريسبي وصوصات", price: 30, description: "للمشاركة" },
 
   // Drinks
   { category: 'drinks', name: "عصير برتقال", price: 12, description: "عصير برتقال طازج" },
   { category: 'drinks', name: "عصير شمندر", price: 12, description: "عصير شمندر طازج" },
   { category: 'drinks', name: "عصير أخضر", price: 12, description: "عصير أخضر طازج" },
+  { category: 'drinks', name: "ماء 0.5L", price: 3, description: "" },
+  { category: 'drinks', name: "صودا", price: 3, description: "" },
+  { category: 'drinks', name: "ميلاف كولا", price: 3, description: "كولا خالية من السكر محلاة بمستخلص التمر الطبيعي" },
+  { category: 'drinks', name: "تشات سبرايت", price: 3, description: "" },
+  { category: 'drinks', name: "اكس ال", price: 5, description: "" },
+  { category: 'drinks', name: "بفاريا تفاح", price: 4, description: "" },
+  { category: 'drinks', name: "فيدا", price: 6, description: "" },
+
 ];

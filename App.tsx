@@ -5,7 +5,7 @@ import { Step1MealSelection } from './components/Step1MealSelection';
 import { Step2DetailsReview } from './components/Step2DetailsReview';
 import { Cart, MenuItem, UserDetails, OrderData, CartItem } from './types';
 import { submitOrderToFirebase } from './services/firebase';
-import { WHATSAPP_NUMBER } from './constants';
+import { WHATSAPP_NUMBER, ORDER_CUTOFF_TIME, ORDER_START_TIME } from './constants';
 
 import logoImage from './resources/images/metrologo.jpeg';
 
@@ -15,6 +15,7 @@ const App: React.FC = () => {
 
   // App Step State
   const [step, setStep] = useState<1 | 2>(1);
+  const [isOrderingOpen, setIsOrderingOpen] = useState(true);
 
   // Data State
   const [cart, setCart] = useState<Cart>({});
@@ -38,17 +39,40 @@ const App: React.FC = () => {
 
   const toggleTheme = () => setIsDark(!isDark);
 
+  // Check Time
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date();
+
+      const start = new Date();
+      start.setHours(ORDER_START_TIME.hour, ORDER_START_TIME.minute, 0, 0);
+
+      const cutoff = new Date();
+      cutoff.setHours(ORDER_CUTOFF_TIME.hour, ORDER_CUTOFF_TIME.minute, 0, 0);
+
+      if (now >= start && now <= cutoff) {
+        setIsOrderingOpen(true);
+      } else {
+        setIsOrderingOpen(false);
+      }
+    };
+
+    checkTime();
+    const interval = setInterval(checkTime, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, []);
+
   // Handlers
   const handleUpdateCart = (item: MenuItem, change: number) => {
     setCart(prev => {
       const current = prev[item.name];
       const newQty = (current?.qty || 0) + change;
-      
+
       if (newQty <= 0) {
         const { [item.name]: _, ...rest } = prev;
         return rest;
       }
-      
+
       return {
         ...prev,
         [item.name]: {
@@ -146,17 +170,17 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-background-light dark:bg-background-dark">
       <div className="max-w-md mx-auto min-h-screen bg-background-light dark:bg-background-dark relative shadow-2xl shadow-black/20">
-        
+
         {/* Header */}
         <header className="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-border-light dark:border-border-dark px-4 py-3 flex items-center justify-between transition-colors">
           <div className="flex items-center gap-3">
-             <div className="w-10 h-10 rounded-full overflow-hidden border border-border-light dark:border-border-dark bg-card-dark">
-                <img src={logoImage} alt="Logo" className="w-full h-full object-cover" />
-             </div>
-             <div>
-               <h1 className="font-bold text-lg leading-tight text-text-light dark:text-text-dark">طلبات الموظفين</h1>
-               <p className="text-xs text-subtle-light dark:text-subtle-dark font-medium">Metro Sandwiches</p>
-             </div>
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-border-light dark:border-border-dark bg-card-dark">
+              <img src={logoImage} alt="Logo" className="w-full h-full object-cover" />
+            </div>
+            <div>
+              <h1 className="font-bold text-lg leading-tight text-text-light dark:text-text-dark">طلبات الموظفين</h1>
+              <p className="text-xs text-subtle-light dark:text-subtle-dark font-medium">Metro Sandwiches</p>
+            </div>
           </div>
           <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
         </header>
@@ -164,15 +188,16 @@ const App: React.FC = () => {
         {/* Main Content Area */}
         <main>
           {step === 1 ? (
-            <Step1MealSelection 
+            <Step1MealSelection
               cart={cart}
               onUpdateCart={handleUpdateCart}
               onUpdateNotes={handleUpdateNotes}
               onNext={goToNextStep}
               totalAmount={totalAmount}
+              isOrderingOpen={isOrderingOpen}
             />
           ) : (
-            <Step2DetailsReview 
+            <Step2DetailsReview
               cart={cart}
               userDetails={userDetails}
               onUserDetailsChange={handleUserDetailsChange}

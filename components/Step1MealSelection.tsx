@@ -11,6 +11,7 @@ interface Step1MealSelectionProps {
   onUpdateNotes: (itemName: string, notes: string) => void;
   onNext: () => void;
   totalAmount: number;
+  isOrderingOpen: boolean;
 }
 
 export const Step1MealSelection: React.FC<Step1MealSelectionProps> = ({
@@ -18,7 +19,8 @@ export const Step1MealSelection: React.FC<Step1MealSelectionProps> = ({
   onUpdateCart,
   onUpdateNotes,
   onNext,
-  totalAmount
+  totalAmount,
+  isOrderingOpen
 }) => {
   const cartItems = Object.values(cart) as CartItem[];
   const totalQty = cartItems.reduce((acc, item) => acc + item.qty, 0);
@@ -26,6 +28,17 @@ export const Step1MealSelection: React.FC<Step1MealSelectionProps> = ({
   return (
     <div className="pb-80 md:pb-64">
       <div className="p-4 space-y-6 animate-fade-in">
+        {!isOrderingOpen && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-start gap-3">
+            <span className="material-icons-outlined text-red-500 dark:text-red-400">error_outline</span>
+            <div>
+              <h3 className="font-bold text-red-700 dark:text-red-400">انتهى وقت استقبال الطلبات</h3>
+              <p className="text-sm text-red-600 dark:text-red-300 mt-1">
+                نعتذر منكم، لقد تم إغلاق باب الطلبات لهذا اليوم. نستقبل طلباتكم غداً من الساعة 7:00 صباحاً وحتى 12:30 ظهراً.
+              </p>
+            </div>
+          </div>
+        )}
         <HeroSection />
         <MenuSection 
           cart={cart}
@@ -72,10 +85,10 @@ export const Step1MealSelection: React.FC<Step1MealSelectionProps> = ({
 
           <button 
             onClick={onNext}
-            disabled={totalQty === 0}
+            disabled={totalQty === 0 || !isOrderingOpen}
             className={`
               w-full h-14 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-lg transition-all
-              ${totalQty === 0 
+              ${totalQty === 0 || !isOrderingOpen
                 ? 'bg-subtle-light dark:bg-subtle-dark text-white cursor-not-allowed opacity-50' 
                 : 'bg-gradient-to-r from-primary to-[#ffc800] text-black hover:shadow-primary/25 active:scale-[0.98]'
               }

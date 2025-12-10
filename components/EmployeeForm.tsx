@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserDetails } from '../types';
 import { COMPANIES, DELIVERY_TIMES } from '../constants';
 
@@ -8,6 +8,35 @@ interface EmployeeFormProps {
 }
 
 export const EmployeeForm: React.FC<EmployeeFormProps> = ({ details, onChange }) => {
+  const [availableTimes, setAvailableTimes] = useState<string[]>(DELIVERY_TIMES);
+
+  useEffect(() => {
+    const checkAvailability = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+      const filtered = DELIVERY_TIMES.filter(time => {
+        if (time === "10:45 AM") {
+          return currentTimeInMinutes <= (10 * 60 + 15); // 10:15
+        }
+        if (time === "11:45 AM") {
+          return currentTimeInMinutes <= (11 * 60 + 15); // 11:15
+        }
+        if (time === "01:00 PM") {
+          return currentTimeInMinutes <= (12 * 60 + 30); // 12:30
+        }
+        return true;
+      });
+      setAvailableTimes(filtered);
+    };
+
+    checkAvailability();
+    const interval = setInterval(checkAvailability, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="space-y-4">
       <div className="flex items-center gap-2 mb-2">
@@ -40,7 +69,7 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({ details, onChange })
               className="w-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl p-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary focus:border-primary transition appearance-none cursor-pointer"
             >
               <option value="">اختر الوقت</option>
-              {DELIVERY_TIMES.map(t => <option key={t} value={t}>{t}</option>)}
+              {availableTimes.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
              <span className="material-icons-outlined absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-subtle-light dark:text-subtle-dark">schedule</span>
           </div>
