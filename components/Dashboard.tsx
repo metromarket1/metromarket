@@ -23,6 +23,8 @@ export const Dashboard: React.FC = () => {
   const [availability, setAvailability] = useState<MenuAvailability>({});
   const [loading, setLoading] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   useEffect(() => {
     const unsubscribe = subscribeToAuth((u) => {
       setUser(u);
@@ -82,9 +84,19 @@ export const Dashboard: React.FC = () => {
     // If undefined, treat as true.
     
     const isCurrentlyAvailable = availability[itemName] !== false;
+    // Toggle the status: if available (true/undefined) -> make it false. If unavailable (false) -> make it true.
+    // We only store 'false' for unavailable items to keep the document small.
+    // If we want to make it available, we can delete the key or set it to true.
+    // Let's set it to true for clarity, or just toggle.
+    
     const newAvailability = { ...availability, [itemName]: !isCurrentlyAvailable };
     
-    await updateMenuAvailability(newAvailability);
+    try {
+      await updateMenuAvailability(newAvailability);
+    } catch (error) {
+      console.error("Failed to update availability:", error);
+      alert("فشل تحديث الحالة. يرجى المحاولة مرة أخرى.");
+    }
   };
 
   if (!user) {
@@ -215,11 +227,25 @@ export const Dashboard: React.FC = () => {
 
         {activeTab === 'menu' && (
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold">إدارة توفر الوجبات</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">قم بإلغاء تفعيل الوجبات التي نفذت من المخزون لإخفائها أو تعطيلها في القائمة.</p>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <h2 className="text-2xl font-bold">إدارة توفر الوجبات</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">قم بإلغاء تفعيل الوجبات التي نفذت من المخزون لإخفائها أو تعطيلها في القائمة.</p>
+              </div>
+              <div className="relative w-full md:w-64">
+                <input
+                  type="text"
+                  placeholder="بحث عن وجبة..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-4 pr-10 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+                <span className="material-icons-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+              </div>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {MENU_DATA.map((item) => {
+              {MENU_DATA.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase())).map((item) => {
                 const isAvailable = availability[item.name] !== false; // Default true
                 return (
                   <div key={item.name} className={`p-4 rounded-xl border ${isAvailable ? 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700' : 'bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800'} flex justify-between items-center shadow-sm`}>
@@ -229,7 +255,7 @@ export const Dashboard: React.FC = () => {
                     </div>
                     <button
                       onClick={() => toggleItemAvailability(item.name, isAvailable)}
-                      className={`px-4 py-2 rounded-lg text-sm font-bold transition ${
+                      className={`px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer select-none ${
                         isAvailable 
                           ? 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400' 
                           : 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400'
